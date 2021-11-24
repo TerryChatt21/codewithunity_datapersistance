@@ -14,12 +14,7 @@ public class DataManager : MonoBehaviour
 
     public string _currentPlayerName;
     public string _currentPlayerScore;
-
-    //Saved Strings.
-
-    public string _nhsPlayerName;
-    public string _nhsPlayerScore;
-
+    
     //Saved when loaded.
     
     public string _hsPlayerName;
@@ -29,16 +24,8 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        CreateInstance();
         Load();
-        Debug.Log(Application.persistentDataPath);
     }
 
     [System.Serializable]
@@ -48,6 +35,21 @@ public class DataManager : MonoBehaviour
         public string _score;
     }
 
+    //Abstraction
+    private void CreateInstance()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    
+    //Abstraction
     public void Save()
     {
         string path = "/Savefile.json";
@@ -58,6 +60,7 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(Application.persistentDataPath + path, json);
     }
 
+    //Abstraction
     public void Load()
     {
         string path = Application.persistentDataPath + "/savefile.json";
